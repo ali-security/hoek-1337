@@ -431,6 +431,14 @@ describe('clone()', () => {
         const copy = Hoek.clone(obj);
         expect(copy).to.equal(obj);
     });
+
+    it('prevents prototype poisoning', () => {
+
+        const a = JSON.parse('{ \"__proto__\": { \"x\": 1 } }');
+        expect(a.x).to.not.exist();
+        const b = Hoek.clone(a);
+        expect(b.x).to.not.exist();
+    });
 });
 
 describe('merge()', () => {
